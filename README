@@ -1,0 +1,62 @@
+django-irs
+Image Rendering Service for Django
+
+DESCRIPTION
+
+Provides on-the-fly image manipulation based on the URL used to access the image. Also provides a utility to generate those URLs for you. The basic use case is that you want to allow images to be uploaded to your website and you want to be able to display those images at various sizes on your site. Manipulation is done using PIL.
+
+The manipulated images are cached (using the cache method you have configured in django) and 304 responses are served appropriately, so the service performs fairly well. However, this is not intended for large-scale use. It is a perfect solution for small to medium websites.
+
+INSTALLATION
+
+I have not made an easy installation method yet, so for now you will have to manually install it, probably by putting the django-irs folder in your PYTHONPATH.
+
+USAGE
+
+1) Include the IRS url conf in your url conf. Note: currently you *must* add it exactly as below or else the url generator (the ImageURL object) won't work properly. I'll hopefully fix that soon.
+
+    urlpatterns = patterns('',
+        ...
+        (r'irs/', include('irs.urls')),
+        ...
+    )
+
+
+2) Store your images somewhere in MEDIA_ROOT. When you give django-irs an image path, it should be relative to this directory. This is the default behavior of django, so this should be a simple task.
+
+3) Use the ImageURL object to generate your image URL. All the methods of ImageURL can be chained.
+
+    from irs.util import ImageURL
+    image_path = 'portraits/dustin.jpg'
+    url = ImageURL(image_path).resize(width=100, height=100).url()
+
+IMAGE MANIPULATION METHODS
+
+These are the methods you can call on the ImageURL object to manipulate the image.
+
+resize(max_small, max_width, max_height):
+
+    Resizes the image to the maximum dimensions provided.
+
+        max_small - provides the max dimension for the smallest original dimension
+        max_width - the maximum width
+        max_height - the maximum height
+
+    In all cases the aspect ratio of the image will be preserved.
+
+square_center_crop(size)
+
+    Creates a square image of the given size. It will be taken from the center of
+    the original image. It is often useful to resize the image before doing this to
+    ensure the result is not an incredibly small piece of the image. For example,
+    taking a 200px square center crop out of a 1200px image would probably look bad.
+
+CONTRIBUTING
+
+The main pieces are in place, but the are very few image manipulation functions currently
+available. Adding more of these would be an easy way to help. However, I'm sure you can
+find lots of other ways to improve my code.
+
+SEE ALSO
+
+    PIL
