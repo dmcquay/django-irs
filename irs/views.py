@@ -8,6 +8,18 @@ from django.views.decorators.http import condition
 from datetime import datetime
 
 def resize(img, params):
+    '''
+    Resizes the provided Image to the specified size.
+    params:
+        s - small
+            Set the maximum value of the smallest side to this value.
+            The other side will be adjusted as necessary to maintain
+            aspect ratio.
+        w - max_width
+        h - max_height
+            Set either or both of these to set maximum values. Aspect
+            ratio will be preserved.
+    '''
     small = params.get('s', None)
     if small:
         owidth, oheight = img.size
