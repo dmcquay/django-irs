@@ -52,6 +52,22 @@ square_center_crop(size)
     Creates a square image of the given size. It will be taken from the center of the original image. It is often useful to resize the image before doing this to ensure the result is not an incredibly small piece of the image. For example, taking a 200px square center crop out of a 1200px image would probably look bad.
 
 
+INLINE DOCUMENTATION
+
+This code uses inline documentation which can be viewed by using pydoc. However, for example, if you run
+
+    pydoc irs.views
+
+You will likely get the following error: 
+
+    problem in irs.views - <type 'exceptions.ImportError'>: Settings cannot be imported, because environment variable DJANGO_SETTINGS_MODULE is undefined.
+
+To get around this, use the default django global settings and then run pydoc.
+
+    export DJANGO_SETTINGS_MODULE=django.conf.global_settings
+    pydoc irs.views
+
+
 CONTRIBUTING
 
 The main pieces are in place, but the are very few image manipulation functions currently available. Adding more of these would be an easy way to help. However, I'm sure you can find lots of other ways to improve my code.

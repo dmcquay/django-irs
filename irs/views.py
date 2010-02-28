@@ -43,6 +43,14 @@ def resize(img, params):
     img.thumbnail((width, height), Image.ANTIALIAS)
 
 def square_center_crop(img, params):
+    '''
+    Useful for creating square thumbnails. Creates a square image of the size
+    specified by params.size. If the requested size is smaller than the original
+    image, the thumbnail will be pulled from the center of the image. If you
+    request a size that is larger than the width or height of the original
+    image, the resulting image will have a black background to fill the blank
+    space.
+    '''
     width, height = img.size
     size = None
     try:
@@ -64,9 +72,16 @@ def square_center_crop(img, params):
     return region
 
 def load_image(path):
+    'Creates a PIL.Image object from the given path'
     return Image.open(path)
 
 def build_actions(action_str):
+    '''
+    Takes the action string (which generally comes from the URL) and
+    returns a List of actions to be executed. Each action is a map
+    containing the name of the action and the params for the action,
+    which is a map.
+    '''
     actions = []
     for action in action_str.split('/'):
         action_parts = action.split('+')
@@ -85,11 +100,29 @@ def build_actions(action_str):
     return actions
 
 def last_modified(request, path, action_str):
+    'Returns the last modified date for a given image.'
     path = settings.MEDIA_ROOT + path
     return datetime.fromtimestamp(os.path.getmtime(path))
 
 @condition(last_modified_func=last_modified)
 def complex_action(request, path, action_str):
+    '''
+    Handles a request for a complex manipulated image. You might also think
+    of it as a "compound" image manipulation. The action string passed in
+    (action_str) is a list of manipulations to be made. The manipulations
+    will be executed in the order they are found in the action string.
+
+    The action string is formatted as follows:
+
+        ${action_name}[+${single_letter_param_name}${param_value}...]...
+
+    For example, an action string that requests a resize and then a square center
+    crop would look like this:
+
+        resize+w100+h150/sccrop+s100
+
+    See also irs.util.ImageURL.
+    '''
     cache_key_prefix = '/irs/complex'
     cache_key = "%s/%s/%s" % (cache_key_prefix, path, action_str)
     img_data = cache.get(cache_key)
