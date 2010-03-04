@@ -12,13 +12,13 @@ class ImageURL:
         * resize
         * square_center_crop
     '''
-    transformations = []
     def __init__(self, image_path_rel):
         '''
         Object constructor. Must pass the image path relative to MEDIA_ROOT as
         defined in your django settings module.
         '''
         self.image_path_rel = image_path_rel
+        self.transformations = []
     def resize(self, width=None, height=None, small=None):
         '''
         Resizes the image to the maximum dimensions provided.
