@@ -16,11 +16,11 @@ I have not made an easy installation method yet, so for now you will have to man
 
 USAGE
 
-1) Include the IRS url conf in your url conf. Note: currently you *must* add it exactly as below or else the url generator (the ImageURL object) won't work properly. I'll hopefully fix that soon.
+1) Include the IRS url conf in your url conf.
 
     urlpatterns = patterns('',
         ...
-        (r'irs/', include('irs.urls')),
+        (^r'irs/', include('irs.urls')),
         ...
     )
 
@@ -75,7 +75,6 @@ The main pieces are in place, but the are very few image manipulation functions 
 
 TODO (In rough order of priority)
 
-  * Figure out how to get reverse function working so that 'irs' isn't hard-coded in the ImageURL class
   * Make setup code so the package can be installed properly
   * There are no unit or integration tests
   * Docs are lacking a bit

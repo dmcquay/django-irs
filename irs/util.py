@@ -1,3 +1,6 @@
+from django.core.urlresolvers import reverse
+from irs.views import complex_action
+
 class ImageURL:
     '''
     Utility to build image urls using django-irs. Usage will look something like this:
@@ -54,7 +57,6 @@ class ImageURL:
         '''
         The final method which should be called to generate the url.
         '''
-        #TODO: use reverse instead of assuming /irs
-        return '/irs/%s/p+%s' % (self._build_action_str(), self.image_path_rel)
+        return reverse(complex_action, kwargs={'action_str':self._build_action_str(), 'path':self.image_path_rel})
     def __unicode__(self):
         return self.url()
