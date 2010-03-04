@@ -11,7 +11,11 @@ The manipulated images are cached (using the cache method you have configured in
 
 INSTALLATION
 
-I have not made an easy installation method yet, so for now you will have to manually install it, probably by putting the django-irs folder in your PYTHONPATH.
+    python setup.py install
+
+    You could also just add django-irs directory to your PYTHONPATH, which may
+    be better for you if you choose to clone the repository so you always have
+    the current code.
 
 
 USAGE
@@ -75,7 +79,6 @@ The main pieces are in place, but the are very few image manipulation functions 
 
 TODO (In rough order of priority)
 
-  * Make setup code so the package can be installed properly
   * There are no unit or integration tests
   * Docs are lacking a bit
   * Abstract the storage backend so things like AmazonS3 & MogileFS could be used instead of local file storage
