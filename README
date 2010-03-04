@@ -73,6 +73,21 @@ CONTRIBUTING
 The main pieces are in place, but the are very few image manipulation functions currently available. Adding more of these would be an easy way to help. However, I'm sure you can find lots of other ways to improve my code.
 
 
+TODO (In rough order of priority)
+
+  * Figure out how to get reverse function working so that 'irs' isn't hard-coded in the ImageURL class
+  * Make setup code so the package can be installed properly
+  * There are no unit or integration tests
+  * Docs are lacking a bit
+  * Abstract the storage backend so things like AmazonS3 & MogileFS could be used instead of local file storage
+  * Add API for storing files, so that this could be used as a standalone service
+    * It would be nice if the API could be accessed directly via python (for local usage) as well
+      as an HTTP REST API.
+    * Might as well also provide a REST Client class to make accessing the API w/
+      Python easy.
+  * Add more image manipulation options
+
+
 SEE ALSO
 
     PIL
