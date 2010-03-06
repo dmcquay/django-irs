@@ -1,0 +1,8 @@
+<h1>Photos</h1>
+<a href="{% url photos.views.add_photo %}">Add Photo</a><br /><br />
+{% for photo in photos %}
+	<p>
+		<img src="{{ photo.url_small }}" />
+		{{ photo.description }}
+	</p>
+{% endfor %}
