@@ -6,6 +6,7 @@ import StringIO
 import os
 from django.views.decorators.http import condition
 from datetime import datetime
+from irs.storage import *
 
 def resize(img, params):
     '''
@@ -73,7 +74,7 @@ def square_center_crop(img, params):
 
 def load_image(path):
     'Creates a PIL.Image object from the given path'
-    return Image.open(path)
+    return FileImage(path).load().image
 
 def build_actions(action_str):
     '''

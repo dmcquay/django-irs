@@ -81,7 +81,6 @@ TODO (In rough order of priority)
 
   * There are no unit or integration tests
   * Docs are lacking a bit
-  * Abstract the storage backend so things like AmazonS3 & MogileFS could be used instead of local file storage
   * Add API for storing files, so that this could be used as a standalone service
     * It would be nice if the API could be accessed directly via python (for local usage) as well
       as an HTTP REST API.
