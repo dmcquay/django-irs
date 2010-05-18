@@ -3,9 +3,7 @@ from PIL import Image
 from django.core.cache import cache
 from django.conf import settings
 import StringIO
-import os
 from django.views.decorators.http import condition
-from datetime import datetime
 from irs.storage import *
 
 def resize(img, params):
@@ -72,9 +70,23 @@ def square_center_crop(img, params):
     region.load
     return region
 
-def load_image(path):
-    'Creates a PIL.Image object from the given path'
-    return FileImage(path).load().image
+def get_image(request, key):
+    'Creates an irs.storage.IRSImage object from the given key'
+
+    backend_module = None
+    try:
+        backend = settings.IRS_STORAGE_BACKEND
+    except AttributeError:
+        backend = 'irs.storage.FileImage'
+
+    module = '.'.join(backend.split('.')[0:-1])
+    klass = backend.split('.')[-1:][0]
+    m = __import__(module, globals(), locals(), [klass], -1)
+    return getattr(m, klass)(request, key)
+
+def load_image(request, key):
+    'Creates a PIL.Image object from the given key'
+    return get_image(request, key).load().image
 
 def build_actions(action_str):
     '''
@@ -102,8 +114,7 @@ def build_actions(action_str):
 
 def last_modified(request, path, action_str):
     'Returns the last modified date for a given image.'
-    path = settings.MEDIA_ROOT + path
-    return datetime.fromtimestamp(os.path.getmtime(path))
+    return get_image(request, path).get_last_modified()
 
 @condition(last_modified_func=last_modified)
 def complex_action(request, path, action_str):
@@ -129,8 +140,7 @@ def complex_action(request, path, action_str):
     img_data = cache.get(cache_key)
     if img_data is None:
         actions = build_actions(action_str)
-        path = settings.MEDIA_ROOT + path
-        img = load_image(path)
+        img = load_image(request, path)
         for action in actions:
             if action['name'] == 'resize':
                 resize(img, action['params'])
